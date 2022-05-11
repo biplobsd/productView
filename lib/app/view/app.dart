@@ -10,6 +10,8 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: Routes().onGenerateRoute,
+      theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromRGBO(247, 242, 255, 1)),
       initialRoute: SearchPage.pathName,
     );
   }
