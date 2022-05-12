@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 import 'package:productview/core/rest_api/models/product_details.dart';
 import 'package:productview/core/rest_api/rest_api.dart';
 

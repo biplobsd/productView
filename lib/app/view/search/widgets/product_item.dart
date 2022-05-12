@@ -36,6 +36,9 @@ class ProductItem extends StatelessWidget {
               // height: 70,
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           Text(productName,
               style:
                   const TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),
@@ -55,22 +58,23 @@ class ProductItem extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    '৳ $currentCharge',
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    '৳ ${currentCharge.toStringAsFixed(2)}',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 12,
+                          color: const Color.fromRGBO(218, 32, 121, 1),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ],
               ),
               Text(
-                '৳ $discountCharge',
-                style: const TextStyle(
-                  decoration: TextDecoration.lineThrough,
-                  color: Colors.red,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w600,
-                ),
+                '৳ ${discountCharge.toStringAsFixed(2)}',
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      decoration: TextDecoration.lineThrough,
+                      color: const Color.fromRGBO(218, 32, 121, 1),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
@@ -87,7 +91,7 @@ class ProductItem extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    '৳ $sellingPrice',
+                    '৳ ${sellingPrice.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           fontSize: 10,
                           color: Colors.grey.shade800,
@@ -105,7 +109,7 @@ class ProductItem extends StatelessWidget {
                         ),
                   ),
                   Text(
-                    '৳ $profit',
+                    '৳ ${profit.toStringAsFixed(2)}',
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                           fontSize: 10,
                           color: Colors.grey.shade800,

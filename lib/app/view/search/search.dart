@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:productview/app/view/search/cubit/searchfetch_cubit.dart';
 import 'package:productview/app/view/search/widgets/product_item.dart';
-import 'package:productview/core/rest_api/cubit/restapi_cubit.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);

@@ -33,9 +33,9 @@ class RestApi {
           (e) => Product(
             image: e['image'],
             productName: e['product_name'],
-            currentCharge: e['charge']['current_charge'] ?? 0.0,
-            discountCharge: e['charge']['discount_charge'] ?? 0.0,
-            sellingPrice: e['charge']['selling_rice'] ?? 0.0,
+            currentCharge: e['charge']['current_charge'] ?? 0.00,
+            discountCharge: e['charge']['discount_charge'] ?? 0.00,
+            sellingPrice: e['charge']['selling_rice'] ?? 0.00,
             profit: e['charge']['profit'] ?? 0.0,
           ),
         )
