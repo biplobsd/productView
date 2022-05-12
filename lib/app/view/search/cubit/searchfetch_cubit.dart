@@ -6,9 +6,13 @@ import 'package:productview/core/rest_api/rest_api.dart';
 part 'searchfetch_state.dart';
 
 class SearchfetchCubit extends Cubit<SearchfetchState> {
-  SearchfetchCubit() : super(SearchfetchInitialState()) {
+  SearchfetchCubit({required this.query}) : super(SearchfetchInitialState()) {
     _client = RestApi();
+    if (query.isNotEmpty) {
+      search(query);
+    }
   }
+  late final String query;
   late final RestApi _client;
   late final List<ProductItem> result;
 

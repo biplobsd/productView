@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:productview/app/view/product_details/cubit/productfetch_cubit.dart';
+import 'package:productview/app/view/search/search.dart';
+import 'package:productview/app/view/search/widgets/searchbar.dart';
 import 'package:productview/core/rest_api/models/product_details.dart';
 import 'package:productview/core/rest_api/models/product_item.dart';
 
@@ -46,7 +48,7 @@ class ProductDetailsPageScreen extends StatelessWidget {
       body: BlocBuilder<ProductfetchCubit, ProductfetchState>(
         builder: (context, state) {
           if (state is ProductfetchingState) {
-            return const CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           } else if (state is ProductfetchedState ||
               state is ProductfetchedNoDataState) {
             return ProductDetailPageWidge(
@@ -81,19 +83,11 @@ class ProductDetailPageWidge extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: TextField(
-              decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-          ),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: SearchbarWidget(onSubmitted: (value) {
+                Navigator.pushReplacementNamed(context, SearchPage.pathName,
+                    arguments: value);
+              })),
           Container(
             alignment: Alignment.center,
             margin: const EdgeInsets.all(15),

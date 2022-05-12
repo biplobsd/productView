@@ -10,7 +10,9 @@ class Routes {
     switch (settings.name) {
       case SearchPage.pathName:
         return MaterialPageRoute<SearchPage>(
-          builder: (context) => const SearchPage(),
+          builder: (context) => SearchPage(
+            query: args is String ? args : 'rice',
+          ),
         );
       case ProductDetailsPage.pathName:
         return MaterialPageRoute<ProductDetailsPage>(

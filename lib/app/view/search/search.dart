@@ -3,16 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:productview/app/view/search/cubit/searchfetch_cubit.dart';
 import 'package:productview/app/view/search/widgets/product_item.dart';
+import 'package:productview/app/view/search/widgets/searchbar.dart';
 import 'package:productview/core/rest_api/models/product_item.dart';
 
 class SearchPage extends StatelessWidget {
-  const SearchPage({Key? key}) : super(key: key);
+  const SearchPage({required this.query, Key? key}) : super(key: key);
   static const String pathName = '/search';
+  final String query;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SearchfetchCubit(),
+      create: (context) => SearchfetchCubit(query: query),
       child: const SearchPageScreen(),
     );
   }
@@ -34,18 +36,10 @@ class SearchPageScreen extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            TextField(
-              onSubmitted: ((value) =>
-                  BlocProvider.of<SearchfetchCubit>(context).search(value)),
-              decoration: InputDecoration(
-                suffixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+            SearchbarWidget(
+              onSubmitted: (value) =>
+                  BlocProvider.of<SearchfetchCubit>(context).search(value),
+              query: BlocProvider.of<SearchfetchCubit>(context).query,
             ),
             const SizedBox(height: 20),
             BlocBuilder<SearchfetchCubit, SearchfetchState>(
