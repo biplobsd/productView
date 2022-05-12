@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:productview/app/view/product_details/cubit/productfetch_cubit.dart';
 import 'package:productview/core/rest_api/models/product_details.dart';
@@ -29,9 +30,15 @@ class ProductDetailsPageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.black,
+        ),
         title: Text(
-          'প্রোডাক্ট ডিটেলস',
-          style: Theme.of(context).textTheme.titleSmall,
+          'প্রোডাক্ট ডিটেল',
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium!
+              .copyWith(fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -65,6 +72,10 @@ class ProductDetailPageWidge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var customTextStyle = Theme.of(context).textTheme.titleSmall!.copyWith(
+        fontWeight: FontWeight.bold,
+        color:
+            Theme.of(context).textTheme.titleSmall!.color!.withOpacity(0.75));
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,9 +113,12 @@ class ProductDetailPageWidge extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(productDetail.productName,
-                    style: Theme.of(context).textTheme.headlineSmall),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(
-                  height: 7,
+                  height: 12,
                 ),
                 Row(
                   children: [
@@ -117,10 +131,13 @@ class ProductDetailPageWidge extends StatelessWidget {
                           .labelSmall!
                           .copyWith(fontWeight: FontWeight.bold),
                     ),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     const Icon(
                       Icons.fiber_manual_record,
                       size: 7,
-                      color: Colors.redAccent,
+                      color: Color.fromRGBO(218, 32, 121, 1),
                     ),
                     Text(' ডিস্ট্রিবিউটর: ',
                         style: Theme.of(context).textTheme.labelSmall),
@@ -147,37 +164,36 @@ class ProductDetailPageWidge extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'ক্রয়মূল্য:',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
+                                style: customTextStyle.copyWith(
+                                    color:
+                                        const Color.fromRGBO(218, 32, 121, 1)),
                               ),
                               Text(
                                 '৳ ${productDetail.currentCharge.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold),
+                                style: customTextStyle.copyWith(
+                                    color:
+                                        const Color.fromRGBO(218, 32, 121, 1)),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'বিক্রয়মূল্য:',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: customTextStyle,
                               ),
                               Text(
                                 '৳ ${productDetail.sellingPrice.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                style: customTextStyle,
                               ),
                             ],
                           ),
                           const SizedBox(
-                            height: 5,
+                            height: 10,
                           ),
                           const DottedLine(
                             dashColor: Colors.grey,
@@ -186,14 +202,13 @@ class ProductDetailPageWidge extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'লাভ:',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: customTextStyle,
                               ),
                               Text(
                                 '৳ ${productDetail.profit.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                style: customTextStyle,
                               ),
                             ],
                           ),
@@ -210,11 +225,13 @@ class ProductDetailPageWidge extends StatelessWidget {
                             height: 70,
                           ),
                           Text(
-                            'এটা কিনুন',
+                            'এটা\nকিনুন',
+                            textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
                                 .overline!
-                                .copyWith(color: Colors.white),
+                                .copyWith(
+                                    color: Colors.white.withOpacity(0.75)),
                           )
                         ],
                       ),
@@ -226,18 +243,18 @@ class ProductDetailPageWidge extends StatelessWidget {
                 ),
                 Text(
                   'বিস্তারিত',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleSmall!
-                      .copyWith(fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black.withOpacity(0.75),
+                      ),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                  productDetail.description,
-                  style: Theme.of(context).textTheme.caption,
-                )
+                  HtmlParser.parseHTML(productDetail.description).text,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ],
             ),
           ),
