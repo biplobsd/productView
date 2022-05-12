@@ -84,10 +84,12 @@ class ProductDetailPageWidge extends StatelessWidget {
         children: [
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SearchbarWidget(onSubmitted: (value) {
-                Navigator.pushReplacementNamed(context, SearchPage.pathName,
-                    arguments: value);
-              })),
+              child: SearchbarWidget(
+                onSubmitted: (value) {
+                  Navigator.pushReplacementNamed(context, SearchPage.pathName,
+                      arguments: value);
+                },
+              )),
           Container(
             alignment: Alignment.center,
             margin: const EdgeInsets.all(15),

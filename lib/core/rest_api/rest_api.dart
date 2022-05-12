@@ -18,7 +18,7 @@ class RestApi {
     };
   }
 
-  Future<List<ProductItem>> getSearchSuggestions(
+  Future<Map<String, dynamic>> getSearchSuggestions(
       {required String query, int limit = 10, int offset = 10}) async {
     final response = await client.get<dynamic>(
       RestPath.searchSuggestions,
@@ -30,19 +30,24 @@ class RestApi {
     );
     final results =
         response.data['data']['products']['results'] as List<dynamic>;
-    return results
-        .map(
-          (e) => ProductItem(
-            image: e['image'],
-            productName: e['product_name'],
-            currentCharge: e['charge']['current_charge'] ?? 0.00,
-            discountCharge: e['charge']['discount_charge'] ?? 0.00,
-            sellingPrice: e['charge']['selling_rice'] ?? 0.00,
-            profit: e['charge']['profit'] ?? 0.0,
-            slug: e['slug'],
-          ),
-        )
-        .toList();
+
+    final productLen = response.data['data']['products']['count'] as int;
+    return {
+      'count': productLen,
+      'result': results
+          .map(
+            (e) => ProductItem(
+              image: e['image'],
+              productName: e['product_name'],
+              currentCharge: e['charge']['current_charge'] ?? 0.00,
+              discountCharge: e['charge']['discount_charge'] ?? 0.00,
+              sellingPrice: e['charge']['selling_rice'] ?? 0.00,
+              profit: e['charge']['profit'] ?? 0.0,
+              slug: e['slug'],
+            ),
+          )
+          .toList()
+    };
   }
 
   Future<ProductDetail> getProductDetail({required String slug}) async {

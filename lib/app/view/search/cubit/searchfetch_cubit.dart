@@ -9,38 +9,57 @@ class SearchfetchCubit extends Cubit<SearchfetchState> {
   SearchfetchCubit({required this.query}) : super(SearchfetchInitialState()) {
     _client = RestApi();
     if (query.isNotEmpty) {
-      search(query);
+      search(query, addList: false);
     }
   }
-  late final String query;
+  late String query;
   late final RestApi _client;
-  late List<ProductItem> result;
+  late int count;
 
-  Future<bool> search(String query) async {
+  late List<ProductItem> result = [];
+  late int offset = 10;
+
+  Future<bool> search(String query,
+      {int offset = 10, bool addList = true}) async {
+    this.query = query;
+    if (!addList) {
+      result = [];
+    }
+    this.offset = offset;
+
     List<ProductItem> data = [];
     if (kDebugMode) {
       print(query);
+      print(addList);
+      print('Size of result: ${result.length}');
     }
     emit(SearchfetchingState());
-    data = await _client
-        .getSearchSuggestions(query: query.toLowerCase())
+    var rawdata = await _client
+        .getSearchSuggestions(query: query.toLowerCase(), offset: offset)
         .onError((error, stackTrace) {
       if (kDebugMode) {
         emit(SearchfetchErrorState());
+        offset = 10;
         print(error);
       }
-      return [];
+      return {
+        'result': [],
+        'count': 0,
+      };
     });
-
+    data = rawdata['result'];
+    count = rawdata['count'];
     if (kDebugMode) {
-      print(data);
+      print(count);
     }
+
     if (data.isNotEmpty) {
       emit(SearchfetchedState());
-      result = data;
+      result += data;
       return true;
     } else if (state is! SearchfetchErrorState) {
       emit(SearchfetchedNoDataState());
+      offset = 10;
     }
     return false;
   }

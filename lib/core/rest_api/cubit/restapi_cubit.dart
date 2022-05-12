@@ -12,10 +12,10 @@ class RestapiCubit extends Cubit<RestapiState> {
 
   late final RestApi _client;
 
-  Future<List<ProductItem>> search(String query) async {
-    emit(RestapiFetchingSearchState());
-    var data = await _client.getSearchSuggestions(query: query);
-    emit(RestapiFetchedSearchState());
-    return data;
-  }
+  // Future<List<ProductItem>> search(String query) async {
+  //   emit(RestapiFetchingSearchState());
+  //   var data = await _client.getSearchSuggestions(query: query);
+  //   emit(RestapiFetchedSearchState());
+  //   return data;
+  // }
 }

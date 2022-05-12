@@ -6,13 +6,15 @@ class SearchbarWidget extends StatelessWidget {
     this.query = '',
     Key? key,
   }) : super(key: key);
-  final TextEditingController searchbarController = TextEditingController();
+  TextEditingController searchbarController = TextEditingController();
   final String query;
   final Function onSubmitted;
   @override
   Widget build(BuildContext context) {
-    searchbarController.text =
-        query.isNotEmpty ? query : searchbarController.text;
+    if (query.isNotEmpty && searchbarController.text != query) {
+      searchbarController.text = query;
+    }
+
     return TextField(
       controller: searchbarController,
       onSubmitted: (value) {
