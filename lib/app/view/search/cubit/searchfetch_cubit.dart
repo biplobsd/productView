@@ -14,7 +14,7 @@ class SearchfetchCubit extends Cubit<SearchfetchState> {
   }
   late final String query;
   late final RestApi _client;
-  late final List<ProductItem> result;
+  late List<ProductItem> result;
 
   Future<bool> search(String query) async {
     List<ProductItem> data = [];
