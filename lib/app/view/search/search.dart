@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:productview/app/view/search/models/product_details.dart';
 
 class SearchPage extends StatelessWidget {
@@ -15,11 +18,6 @@ class SearchPageScreen extends StatelessWidget {
   const SearchPageScreen({
     Key? key,
   }) : super(key: key);
-
-  final String title = 'Lays Classic Family';
-  final String imgUrl =
-      'https://d1ojphegpburrh.cloudfront.net/media/images/product/None/1383/%E0%A6%B8%E0%A6%9C_4.png';
-  final String price = '20.00';
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +43,10 @@ class SearchPageScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 15,
-                  crossAxisSpacing: 15,
-                ),
+              child: MasonryGridView.count(
+                mainAxisSpacing: 15,
+                crossAxisSpacing: 15,
+                crossAxisCount: 2,
                 itemCount: productDetails.length,
                 itemBuilder: (BuildContext ctx, index) {
                   return ProductWidget(
@@ -88,30 +84,97 @@ class ProductWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         color: Colors.white,
       ),
-      child: FittedBox(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Image.network(
               imgUrl,
+              fit: BoxFit.cover,
+              // height: 70,
             ),
-            Text(
-              title,
-            ),
-            Row(
-              children: [
-                const Text('মূল্য '),
-                Text('৳ $price'),
-              ],
-            ),
-            Row(
-              children: [
-                const Text('মূল্য '),
-                Text('৳ $price'),
-              ],
-            )
-          ],
-        ),
+          ),
+          Text(title,
+              style:
+                  const TextStyle(fontSize: 10, fontWeight: FontWeight.w600)),
+          const SizedBox(
+            height: 5,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'ক্রয় ',
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          fontSize: 5,
+                        ),
+                  ),
+                  Text(
+                    '৳ $price',
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                '৳ $price',
+                style: const TextStyle(
+                  decoration: TextDecoration.lineThrough,
+                  color: Colors.red,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'বিক্রয় ',
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          fontSize: 5,
+                        ),
+                  ),
+                  Text(
+                    '৳ $price',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 10,
+                          color: Colors.grey.shade800,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'লাভ ',
+                    style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                          fontSize: 5,
+                        ),
+                  ),
+                  Text(
+                    '৳ $price',
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 10,
+                          color: Colors.grey.shade800,
+                          fontWeight: FontWeight.w600,
+                        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

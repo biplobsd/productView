@@ -13,7 +13,7 @@ class App extends StatelessWidget {
       onGenerateRoute: Routes().onGenerateRoute,
       theme: ThemeData(
           scaffoldBackgroundColor: const Color.fromRGBO(247, 242, 255, 1)),
-      initialRoute: ProductDetailsPage.pathName,
+      initialRoute: SearchPage.pathName,
     );
   }
 }
