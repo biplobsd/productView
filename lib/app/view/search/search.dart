@@ -45,7 +45,7 @@ class SearchPageScreen extends StatelessWidget {
             BlocBuilder<RestapiCubit, RestapiState>(
               builder: (context, state) {
                 if (state is RestapiInitial) {
-                  BlocProvider.of<RestapiCubit>(context).testGet();
+                  BlocProvider.of<RestapiCubit>(context).testGet('rice');
                 }
                 if (state is RestapiFetchedSearchState) {
                   return const Text('Data Fetched');

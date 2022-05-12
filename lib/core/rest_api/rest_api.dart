@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:productview/core/rest_api/models/product_details.dart';
 import 'package:productview/core/rest_api/rest_url_path.dart';
 
@@ -17,18 +16,29 @@ class RestApi {
     };
   }
 
-  Future<void> getSearchSuggestions() async {
+  Future<List<Product>> getSearchSuggestions(
+      {required String query, int limit = 10, int offset = 10}) async {
     final response = await client.get<dynamic>(
       RestPath.searchSuggestions,
       queryParameters: <String, dynamic>{
-        'limit': 1,
-        'offset': 1,
-        'search': 'rice',
+        'limit': limit,
+        'offset': offset,
+        'search': query,
       },
     );
-
-    if (kDebugMode) {
-      print(response.data);
-    }
+    final results =
+        response.data['data']['products']['results'] as List<dynamic>;
+    return results
+        .map(
+          (e) => Product(
+            image: e['image'],
+            productName: e['product_name'],
+            currentCharge: e['charge']['current_charge'] ?? 0.0,
+            discountCharge: e['charge']['discount_charge'] ?? 0.0,
+            sellingPrice: e['charge']['selling_rice'] ?? 0.0,
+            profit: e['charge']['profit'] ?? 0.0,
+          ),
+        )
+        .toList();
   }
 }

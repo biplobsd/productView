@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/foundation.dart';
 import 'package:productview/core/rest_api/rest_api.dart';
 
 part 'restapi_state.dart';
@@ -11,9 +11,11 @@ class RestapiCubit extends Cubit<RestapiState> {
 
   late final RestApi _client;
 
-  void testGet() {
+  void testGet(String query) {
     emit(RestapiFetchingSearchState());
-    _client.getSearchSuggestions();
+    if (kDebugMode) {
+      _client.getSearchSuggestions(query: query).then((value) => print(value));
+    }
     emit(RestapiFetchedSearchState());
   }
 }
