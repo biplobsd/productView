@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:productview/core/rest_api/models/product_details.dart';
+import 'package:productview/core/rest_api/models/product_item.dart';
 import 'package:productview/core/rest_api/rest_api.dart';
 
 part 'searchfetch_state.dart';
@@ -10,10 +10,10 @@ class SearchfetchCubit extends Cubit<SearchfetchState> {
     _client = RestApi();
   }
   late final RestApi _client;
-  late final List<Product> result;
+  late final List<ProductItem> result;
 
   Future<bool> search(String query) async {
-    List<Product> data = [];
+    List<ProductItem> data = [];
     if (kDebugMode) {
       print(query);
     }

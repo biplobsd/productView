@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:productview/app/view/search/cubit/searchfetch_cubit.dart';
 import 'package:productview/app/view/search/widgets/product_item.dart';
+import 'package:productview/core/rest_api/models/product_item.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -59,13 +60,17 @@ class SearchPageScreen extends StatelessWidget {
                       crossAxisCount: 2,
                       itemCount: productDetails.length,
                       itemBuilder: (BuildContext ctx, index) {
-                        return ProductItem(
-                          image: productDetails[index].image,
-                          productName: productDetails[index].productName,
-                          currentCharge: productDetails[index].currentCharge,
-                          discountCharge: productDetails[index].discountCharge,
-                          sellingPrice: productDetails[index].sellingPrice,
-                          profit: productDetails[index].profit,
+                        return ProductItemWidget(
+                          productItem: ProductItem(
+                            image: productDetails[index].image,
+                            productName: productDetails[index].productName,
+                            currentCharge: productDetails[index].currentCharge,
+                            discountCharge:
+                                productDetails[index].discountCharge,
+                            sellingPrice: productDetails[index].sellingPrice,
+                            profit: productDetails[index].profit,
+                            slug: productDetails[index].slug,
+                          ),
                         );
                       },
                     ),
