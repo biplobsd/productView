@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:productview/core/rest_api/models/product_details.dart';
 import 'package:productview/core/rest_api/rest_api.dart';
 
 part 'restapi_state.dart';
@@ -11,11 +12,10 @@ class RestapiCubit extends Cubit<RestapiState> {
 
   late final RestApi _client;
 
-  void testGet(String query) {
+  Future<List<Product>> search(String query) async {
     emit(RestapiFetchingSearchState());
-    if (kDebugMode) {
-      _client.getSearchSuggestions(query: query).then((value) => print(value));
-    }
+    var data = await _client.getSearchSuggestions(query: query);
     emit(RestapiFetchedSearchState());
+    return data;
   }
 }

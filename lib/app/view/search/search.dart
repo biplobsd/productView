@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:productview/app/view/search/cubit/searchfetch_cubit.dart';
 import 'package:productview/app/view/search/widgets/product_item.dart';
 import 'package:productview/core/rest_api/cubit/restapi_cubit.dart';
 
@@ -10,7 +11,10 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SearchPageScreen();
+    return BlocProvider(
+      create: (context) => SearchfetchCubit(),
+      child: const SearchPageScreen(),
+    );
   }
 }
 
@@ -31,6 +35,8 @@ class SearchPageScreen extends StatelessWidget {
               height: 50,
             ),
             TextField(
+              onSubmitted: ((value) =>
+                  BlocProvider.of<SearchfetchCubit>(context).search(value)),
               decoration: InputDecoration(
                 suffixIcon: const Icon(Icons.search),
                 filled: true,
@@ -42,32 +48,41 @@ class SearchPageScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            BlocBuilder<RestapiCubit, RestapiState>(
+            BlocBuilder<SearchfetchCubit, SearchfetchState>(
               builder: (context, state) {
-                if (state is RestapiInitial) {
-                  BlocProvider.of<RestapiCubit>(context).testGet('rice');
+                if (state is SearchfetchedState) {
+                  var productDetails =
+                      BlocProvider.of<SearchfetchCubit>(context).result;
+                  return Expanded(
+                    child: MasonryGridView.count(
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 15,
+                      crossAxisCount: 2,
+                      itemCount: productDetails.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return ProductItem(
+                          image: productDetails[index].image,
+                          productName: productDetails[index].productName,
+                          currentCharge: productDetails[index].currentCharge,
+                          discountCharge: productDetails[index].discountCharge,
+                          sellingPrice: productDetails[index].sellingPrice,
+                          profit: productDetails[index].profit,
+                        );
+                      },
+                    ),
+                  );
+                } else if (state is SearchfetchingState) {
+                  return const CircularProgressIndicator();
+                } else if (state is SearchfetchErrorState) {
+                  return const Text(
+                      'An error raise when fetching data from api.');
+                } else if (state is SearchfetchedNoDataState) {
+                  return const Text('No data found. Try again...');
+                } else {
+                  return Container();
                 }
-                if (state is RestapiFetchedSearchState) {
-                  return const Text('Data Fetched');
-                }
-                return Container();
               },
-            )
-            // Expanded(
-            //   child: MasonryGridView.count(
-            //     mainAxisSpacing: 15,
-            //     crossAxisSpacing: 15,
-            //     crossAxisCount: 2,
-            //     itemCount: productDetails.length,
-            //     itemBuilder: (BuildContext ctx, index) {
-            //       return ProductItem(
-            //         image: productDetails[index].imageUrl,
-            //         productName: productDetails[index].title,
-            //         price: productDetails[index].price,
-            //       );
-            //     },
-            //   ),
-            // ),
+            ),
           ],
         ),
       ),
