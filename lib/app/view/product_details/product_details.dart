@@ -104,6 +104,7 @@ class ProductDetailPageWidge extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: SearchbarWidget(
+              searchbarController: TextEditingController(),
               onSubmitted: (String value) {
                 Navigator.pushReplacementNamed(
                   context,

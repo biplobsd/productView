@@ -16,18 +16,21 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchfetchCubit(query: query),
-      child: SearchPageScreen(),
+      child: SearchPageScreen(
+        textEditingController: TextEditingController(text: query),
+      ),
     );
   }
 }
 
 class SearchPageScreen extends StatelessWidget {
   SearchPageScreen({
+    required this.textEditingController,
     Key? key,
   }) : super(key: key);
 
   final RefreshController refreshController = RefreshController();
-
+  final TextEditingController textEditingController;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +53,7 @@ class SearchPageScreen extends StatelessWidget {
                 onSubmitted: (String value) =>
                     BlocProvider.of<SearchfetchCubit>(context)
                         .search(value, offset: 10, addList: false),
-                query: BlocProvider.of<SearchfetchCubit>(context).query,
+                searchbarController: textEditingController,
               ),
               const SizedBox(height: 20),
               BlocBuilder<SearchfetchCubit, SearchfetchState>(

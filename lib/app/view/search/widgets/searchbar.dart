@@ -3,18 +3,13 @@ import 'package:flutter/material.dart';
 class SearchbarWidget extends StatelessWidget {
   SearchbarWidget({
     required this.onSubmitted,
-    this.query = '',
+    required this.searchbarController,
     Key? key,
   }) : super(key: key);
-  final TextEditingController searchbarController = TextEditingController();
-  final String query;
   final Function onSubmitted;
+  final TextEditingController searchbarController;
   @override
   Widget build(BuildContext context) {
-    if (query.isNotEmpty && searchbarController.text != query) {
-      searchbarController.text = query;
-    }
-
     return SizedBox(
       height: 50,
       child: TextField(
