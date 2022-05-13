@@ -2,12 +2,13 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:productview/app/view/product_details/cubit/productfetch_cubit.dart';
 import 'package:productview/app/view/search/search.dart';
 import 'package:productview/app/view/search/widgets/cubit/cartquantitycounter_cubit.dart';
 import 'package:productview/app/view/search/widgets/product_item.dart';
 import 'package:productview/app/view/search/widgets/searchbar.dart';
+import 'package:productview/core/cubit/maincart_cubit.dart';
 import 'package:productview/core/rest_api/models/product_details.dart';
 import 'package:productview/core/rest_api/models/product_item.dart';
 
@@ -75,12 +76,13 @@ class ProductDetailsPageScreen extends StatelessWidget {
 }
 
 class ProductDetailPageWidge extends StatelessWidget {
-  const ProductDetailPageWidge({
+  ProductDetailPageWidge({
     required this.productDetail,
     Key? key,
   }) : super(key: key);
 
   final ProductDetail productDetail;
+  bool isBuyed = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +92,6 @@ class ProductDetailPageWidge extends StatelessWidget {
             Theme.of(context).textTheme.titleSmall!.color!.withOpacity(0.75));
     BlocProvider.of<CartquantitycounterCubit>(context).count =
         productDetail.cartquantity;
-    print(productDetail.cartquantity);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -268,30 +269,97 @@ class ProductDetailPageWidge extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      bottom: -35,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/img/hagon.svg',
-                            height: 70,
-                          ),
-                          Text(
-                            'এটা\nকিনুন',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .overline!
-                                .copyWith(
-                                    color: Colors.white.withOpacity(0.75)),
-                          )
-                        ],
+                      bottom: -60,
+                      child: InkWell(
+                        onTap: () {
+                          BlocProvider.of<MaincartCubit>(context)
+                              .addItem(productDetail);
+                          isBuyed = true;
+                        },
+                        child: BlocBuilder<MaincartCubit, MaincartState>(
+                          builder: (context, state) {
+                            return Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                SizedBox(
+                                  height: 90,
+                                  child: ClipPolygon(
+                                    sides: 6,
+                                    borderRadius: 10,
+                                    rotate: 180.0,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(
+                                          gradient: LinearGradient(
+                                              colors: [
+                                            Color(0xff6210E1),
+                                            Color(0xff2503B9)
+                                          ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter)),
+                                      child: isBuyed
+                                          ? FittedBox(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    'assets/img/shopping_bag.png',
+                                                    height: 30,
+                                                  ),
+                                                  const Text(
+                                                    'কার্ট',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          : Text(
+                                              'এটি\nকিনুন',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.8),
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                ),
+                                if (BlocProvider.of<MaincartCubit>(context)
+                                    .isNotEmpty)
+                                  Positioned(
+                                    right: -10.0,
+                                    top: 13,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.all(5.0),
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xffFFCCE4),
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Colors.white, width: 2)),
+                                      child: Text(
+                                          '${BlocProvider.of<MaincartCubit>(context).howMany}',
+                                          style: const TextStyle(
+                                            color: Color(0xffDA2079),
+                                          )),
+                                    ),
+                                  )
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 30,
                 ),
                 Text(
                   'বিস্তারিত',
@@ -301,7 +369,7 @@ class ProductDetailPageWidge extends StatelessWidget {
                       ),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 15,
                 ),
                 Text(
                   HtmlParser.parseHTML(productDetail.description).text,

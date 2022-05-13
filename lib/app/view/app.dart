@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:productview/app/view/search/search.dart';
+import 'package:productview/core/cubit/maincart_cubit.dart';
 import 'package:productview/routes/routes.dart';
 
 class App extends StatelessWidget {
@@ -7,12 +9,15 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: Routes().onGenerateRoute,
-      theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromRGBO(247, 242, 255, 1)),
-      initialRoute: SearchPage.pathName,
+    return BlocProvider(
+      create: (context) => MaincartCubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: Routes().onGenerateRoute,
+        theme: ThemeData(
+            scaffoldBackgroundColor: const Color.fromRGBO(247, 242, 255, 1)),
+        initialRoute: SearchPage.pathName,
+      ),
     );
   }
 }
