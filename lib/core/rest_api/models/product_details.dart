@@ -15,6 +15,7 @@ class ProductDetail extends ProductItem {
     required this.seller,
     required int cartquantity,
     required bool isEnable,
+    this.images = const [],
   }) : super(
           image: image,
           productName: productName,
@@ -30,4 +31,5 @@ class ProductDetail extends ProductItem {
   final String description;
   final String brandName;
   final String seller;
+  final List<String> images;
 }

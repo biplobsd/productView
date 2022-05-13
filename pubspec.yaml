@@ -45,6 +45,8 @@ dependencies:
   pull_to_refresh: ^2.0.0
   fluttertoast: ^8.0.9
   flutter_polygon: ^0.3.0+2
+  carousel_slider: ^4.1.1
+  smooth_page_indicator: ^1.0.0+2
 
 dev_dependencies:
   flutter_test:

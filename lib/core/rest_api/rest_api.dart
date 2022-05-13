@@ -60,6 +60,9 @@ class RestApi {
     }
     final results = response.data['data'] as Map<String, dynamic>;
     return ProductDetail(
+      images: (results['images'] as List<dynamic>)
+          .map((e) => e['image'] as String)
+          .toList(),
       image: results['image'],
       productName: results['product_name'],
       currentCharge: results['charge']['current_charge'] ?? 0.00,

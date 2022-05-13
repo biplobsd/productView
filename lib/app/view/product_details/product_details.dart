@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -104,19 +105,31 @@ class ProductDetailPageWidge extends StatelessWidget {
                       arguments: value);
                 },
               )),
-          Container(
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(15),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
-            ),
-            child: Image.network(
-              productDetail.image,
-              height: 200,
-            ),
-          ),
+          CarouselSlider.builder(
+              itemCount: productDetail.images.length,
+              options: CarouselOptions(
+                height: 300,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                enlargeStrategy: CenterPageEnlargeStrategy.height,
+              ),
+              itemBuilder: (context, index, realIndex) {
+                return Container(
+                  alignment: Alignment.center,
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                  ),
+                  child: Image.network(
+                    productDetail.images[index],
+                    fit: BoxFit.cover,
+                    // height: 200,
+                  ),
+                );
+              }),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
@@ -134,12 +147,15 @@ class ProductDetailPageWidge extends StatelessWidget {
                   children: [
                     Text('ব্র্যান্ড:',
                         style: Theme.of(context).textTheme.labelSmall),
-                    Text(
-                      productDetail.brandName,
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelSmall!
-                          .copyWith(fontWeight: FontWeight.bold),
+                    Flexible(
+                      child: Text(
+                        productDetail.brandName,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelSmall!
+                            .copyWith(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     const SizedBox(
                       width: 10,
@@ -151,11 +167,15 @@ class ProductDetailPageWidge extends StatelessWidget {
                     ),
                     Text(' ডিস্ট্রিবিউটর: ',
                         style: Theme.of(context).textTheme.labelSmall),
-                    Text(productDetail.seller,
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelSmall!
-                            .copyWith(fontWeight: FontWeight.bold)),
+                    Flexible(
+                      child: Text(productDetail.seller,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(fontWeight: FontWeight.bold)),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 15),
