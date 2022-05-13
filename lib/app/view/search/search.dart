@@ -5,6 +5,7 @@ import 'package:productview/app/view/search/cubit/searchfetch_cubit.dart';
 import 'package:productview/app/view/search/widgets/product_item.dart';
 import 'package:productview/app/view/search/widgets/searchbar.dart';
 import 'package:productview/core/rest_api/models/product_item.dart';
+import 'package:productview/core/themes/app_theme.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SearchPage extends StatelessWidget {
@@ -34,6 +35,10 @@ class SearchPageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppTheme.appBgColor,
+        elevation: 0,
+      ),
       body: BlocListener<SearchfetchCubit, SearchfetchState>(
         listener: (context, state) {
           if (state is SearchfetchedNoDataState ||
@@ -43,12 +48,9 @@ class SearchPageScreen extends StatelessWidget {
         },
         child: Container(
           height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             children: [
-              const SizedBox(
-                height: 50,
-              ),
               SearchbarWidget(
                 onSubmitted: (String value) =>
                     BlocProvider.of<SearchfetchCubit>(context)

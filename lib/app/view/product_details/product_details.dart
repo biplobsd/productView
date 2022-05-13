@@ -106,9 +106,10 @@ class ProductDetailPageWidge extends StatelessWidget {
             child: SearchbarWidget(
               searchbarController: TextEditingController(),
               onSubmitted: (String value) {
-                Navigator.pushReplacementNamed(
+                Navigator.pushNamedAndRemoveUntil(
                   context,
                   SearchPage.pathName,
+                  (route) => false,
                   arguments: value,
                 );
               },

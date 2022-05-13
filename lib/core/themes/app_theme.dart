@@ -11,6 +11,7 @@ class AppTheme {
   static Color lightAccentColor = Colors.blueGrey.shade200;
   static Color lightParticlesColor = const Color(0x44948282);
   static Color lightBlackColor = const Color.fromRGBO(100, 100, 100, 1);
+  static const Color appBgColor = Color(0xffF7F2FF);
 
   static Color darkBackgroundColor = const Color(0xFF1A2127);
   static Color darkPrimaryColor = const Color(0xFF1A2127);
@@ -34,18 +35,14 @@ class AppTheme {
   static Brightness get currentSystemBrightness =>
       SchedulerBinding.instance.window.platformBrightness;
 
-  static void setStatusBarAndNavigationBarColors(ThemeMode themeMode) {
+  static void setStatusBarAndNavigationBarColors() {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-            themeMode == ThemeMode.light ? Brightness.dark : Brightness.light,
-        systemNavigationBarIconBrightness:
-            themeMode == ThemeMode.light ? Brightness.dark : Brightness.light,
-        systemNavigationBarColor: themeMode == ThemeMode.light
-            ? lightBackgroundColor
-            : darkBackgroundColor,
-        systemNavigationBarDividerColor: Colors.transparent,
+        statusBarColor: appBgColor,
+        statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: darkBackgroundColor,
+        systemNavigationBarDividerColor: appBgColor,
       ),
     );
   }

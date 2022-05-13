@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchbarWidget extends StatelessWidget {
-  SearchbarWidget({
+  const SearchbarWidget({
     required this.onSubmitted,
     required this.searchbarController,
     Key? key,

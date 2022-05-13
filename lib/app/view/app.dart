@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:productview/app/view/search/search.dart';
 import 'package:productview/core/cubit/maincart_cubit.dart';
@@ -15,6 +16,9 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: Routes().onGenerateRoute,
         theme: ThemeData(
+            appBarTheme: const AppBarTheme(
+              systemOverlayStyle: SystemUiOverlayStyle.dark,
+            ),
             scaffoldBackgroundColor: const Color.fromRGBO(247, 242, 255, 1),
             fontFamily: 'balooDa2'),
         initialRoute: SearchPage.pathName,
