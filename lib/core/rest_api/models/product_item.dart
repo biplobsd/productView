@@ -6,6 +6,7 @@ class ProductItem {
   final double sellingPrice;
   final double profit;
   final String slug;
+  final int stock;
   late int cartquantity;
   late bool isEnable;
 
@@ -17,6 +18,7 @@ class ProductItem {
     required this.sellingPrice,
     required this.profit,
     required this.slug,
+    required this.stock,
     this.cartquantity = 1,
     this.isEnable = false,
   });

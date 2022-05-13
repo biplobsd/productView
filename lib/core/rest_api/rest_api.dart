@@ -44,6 +44,7 @@ class RestApi {
               sellingPrice: e['charge']['selling_rice'] ?? 0.00,
               profit: e['charge']['profit'] ?? 0.0,
               slug: e['slug'],
+              stock: e['stock'],
             ),
           )
           .toList()
@@ -59,16 +60,16 @@ class RestApi {
     }
     final results = response.data['data'] as Map<String, dynamic>;
     return ProductDetail(
-      image: results['image'],
-      productName: results['product_name'],
-      currentCharge: results['charge']['current_charge'] ?? 0.00,
-      discountCharge: results['charge']['discount_charge'] ?? 0.00,
-      sellingPrice: results['charge']['selling_rice'] ?? 0.00,
-      profit: results['charge']['profit'] ?? 0.0,
-      slug: results['slug'],
-      brandName: results['brand']['name'],
-      seller: results['seller'],
-      description: results['description'],
-    );
+        image: results['image'],
+        productName: results['product_name'],
+        currentCharge: results['charge']['current_charge'] ?? 0.00,
+        discountCharge: results['charge']['discount_charge'] ?? 0.00,
+        sellingPrice: results['charge']['selling_rice'] ?? 0.00,
+        profit: results['charge']['profit'] ?? 0.0,
+        slug: results['slug'],
+        brandName: results['brand']['name'],
+        seller: results['seller'],
+        description: results['description'],
+        stock: results['stock']);
   }
 }

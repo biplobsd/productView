@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:productview/app/view/product_details/product_details.dart';
 import 'package:productview/app/view/search/widgets/cubit/cartquantitycounter_cubit.dart';
 import 'package:productview/core/rest_api/models/product_item.dart';
@@ -38,10 +38,14 @@ class ProductItemStracture extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            Navigator.of(context).pushNamed(
-              ProductDetailsPage.pathName,
-              arguments: productItem,
-            );
+            if (productItem.stock != 0) {
+              Navigator.of(context).pushNamed(
+                ProductDetailsPage.pathName,
+                arguments: productItem,
+              );
+            } else {
+              Fluttertoast.showToast(msg: 'Product is stock out!');
+            }
           },
           child: Container(
             padding: const EdgeInsets.all(8.0),
@@ -158,84 +162,117 @@ class ProductItemStracture extends StatelessWidget {
             ),
           ),
         ),
-        BlocBuilder<CartquantitycounterCubit, CartquantitycounterState>(
-          builder: (context, state) {
-            if (state is CartquantitycounterDisable ||
-                state is CartquantitycounterInitial) {
-              return Positioned(
-                bottom: -15,
-                child: CartQuantityIcDc(
-                  callBack: () {
-                    productItem.isEnable = true;
-                    BlocProvider.of<CartquantitycounterCubit>(context)
-                        .enable(count: productItem.cartquantity);
-                  },
-                  colors: const [Color(0xff6210E1), Color(0xff2503B9)],
-                  icon: Icons.add,
-                  size: 35,
-                ),
-              );
-            } else {
-              return Positioned(
-                  bottom: -20,
-                  child: Container(
-                    height: 30,
-                    padding: const EdgeInsets.all(3.5),
-                    decoration: const BoxDecoration(
+        productItem.stock == 0
+            ? Positioned(
+                top: 10,
+                right: 10,
+                child: Container(
+                  alignment: Alignment.center,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
+                  decoration: const BoxDecoration(
                       color: Color(0xffFFCCE4),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CartQuantityIcDc(
-                          callBack: () {
-                            BlocProvider.of<CartquantitycounterCubit>(context)
-                                .refresh(
-                              BlocProvider.of<CartquantitycounterCubit>(context)
-                                  .count -= 1,
-                            );
-                          },
-                          colors: const [Color(0xffFFBFDD), Color(0xffFFBFDD)],
-                          icon: Icons.remove,
-                          size: 25,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        FittedBox(
-                          child: Text(
-                            '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
-                            style: Theme.of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(
-                                    color: const Color(0xffDA2079)
-                                        .withOpacity(0.8),
-                                    fontWeight: FontWeight.bold),
+                      borderRadius: BorderRadius.all(Radius.circular(8))),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 5, right: 5, bottom: 4),
+                    child: Text(
+                      'স্টকে নেই',
+                      style: Theme.of(context).textTheme.caption!.copyWith(
+                            color: const Color.fromRGBO(198, 40, 40, 1),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        CartQuantityIcDc(
-                          callBack: () {
-                            BlocProvider.of<CartquantitycounterCubit>(context)
-                                .refresh(
-                              BlocProvider.of<CartquantitycounterCubit>(context)
-                                  .count += 1,
-                            );
-                          },
-                          colors: const [Color(0xff6210E1), Color(0xff2503B9)],
-                          icon: Icons.add,
-                          size: 25,
-                        ),
-                      ],
                     ),
-                  ));
-            }
-          },
-        ),
+                  ),
+                ),
+              )
+            : BlocBuilder<CartquantitycounterCubit, CartquantitycounterState>(
+                builder: (context, state) {
+                  if (state is CartquantitycounterDisable ||
+                      state is CartquantitycounterInitial) {
+                    return Positioned(
+                      bottom: -15,
+                      child: CartQuantityIcDc(
+                        callBack: () {
+                          productItem.isEnable = true;
+                          BlocProvider.of<CartquantitycounterCubit>(context)
+                              .enable(count: productItem.cartquantity);
+                        },
+                        colors: const [Color(0xff6210E1), Color(0xff2503B9)],
+                        icon: Icons.add,
+                        size: 35,
+                      ),
+                    );
+                  } else {
+                    return Positioned(
+                        bottom: -20,
+                        child: Container(
+                          height: 30,
+                          padding: const EdgeInsets.all(3.5),
+                          decoration: const BoxDecoration(
+                            color: Color(0xffFFCCE4),
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CartQuantityIcDc(
+                                callBack: () {
+                                  BlocProvider.of<CartquantitycounterCubit>(
+                                          context)
+                                      .refresh(
+                                    BlocProvider.of<CartquantitycounterCubit>(
+                                            context)
+                                        .count -= 1,
+                                  );
+                                },
+                                colors: const [
+                                  Color(0xffFFBFDD),
+                                  Color(0xffFFBFDD)
+                                ],
+                                icon: Icons.remove,
+                                size: 25,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              FittedBox(
+                                child: Text(
+                                  '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .caption!
+                                      .copyWith(
+                                          color: const Color(0xffDA2079)
+                                              .withOpacity(0.8),
+                                          fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              CartQuantityIcDc(
+                                callBack: () {
+                                  BlocProvider.of<CartquantitycounterCubit>(
+                                          context)
+                                      .refresh(
+                                    BlocProvider.of<CartquantitycounterCubit>(
+                                            context)
+                                        .count += 1,
+                                  );
+                                },
+                                colors: const [
+                                  Color(0xff6210E1),
+                                  Color(0xff2503B9)
+                                ],
+                                icon: Icons.add,
+                                size: 25,
+                              ),
+                            ],
+                          ),
+                        ));
+                  }
+                },
+              ),
       ],
     );
   }

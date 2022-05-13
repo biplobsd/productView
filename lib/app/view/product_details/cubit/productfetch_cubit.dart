@@ -34,6 +34,7 @@ class ProductfetchCubit extends Cubit<ProductfetchState> {
         discountCharge: productItem.discountCharge,
         sellingPrice: productItem.sellingPrice,
         profit: productItem.profit,
+        stock: productItem.stock,
         slug: slug,
         description: '',
         brandName: '',

@@ -105,6 +105,7 @@ class SearchPageScreen extends StatelessWidget {
                               sellingPrice: productDetails[index].sellingPrice,
                               profit: productDetails[index].profit,
                               slug: productDetails[index].slug,
+                              stock: productDetails[index].stock,
                             ),
                           );
                         },
