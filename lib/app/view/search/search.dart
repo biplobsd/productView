@@ -50,7 +50,10 @@ class SearchPageScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is SearchfetchingState) {
                   return const CircularProgressIndicator();
+                } else if (state is SearchfetchedNoDataState) {
+                  return const Text('No data to fetch');
                 }
+
                 return Container();
               },
             ),

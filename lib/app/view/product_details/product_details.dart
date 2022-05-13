@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -129,10 +130,9 @@ class ProductDetailPageWidge extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15),
                   color: Colors.white,
                 ),
-                child: Image.network(
-                  productDetail.images[index],
-                  fit: BoxFit.cover,
-                  // height: 200,
+                child: FancyShimmerImage(
+                  imageUrl: productDetail.images[index],
+                  boxFit: BoxFit.scaleDown,
                 ),
               );
             },
@@ -199,7 +199,7 @@ class ProductDetailPageWidge extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(bottom: 20),
+                      margin: const EdgeInsets.only(bottom: 1),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -321,40 +321,24 @@ class ProductDetailPageWidge extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              Text(
-                                'বিস্তারিত',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black.withOpacity(0.75),
-                                    ),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Text(
-                                HtmlParser.parseHTML(productDetail.description)
-                                    .text,
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              const SizedBox(
-                                height: 30,
-                              ),
-                            ],
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            'বিস্তারিত',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black.withOpacity(0.75),
+                                ),
                           ),
                         ],
                       ),
                     ),
                     Positioned(
-                      bottom: 90,
+                      bottom: -15,
                       child: InkWell(
                         onTap: () {
                           BlocProvider.of<MaincartCubit>(context)
@@ -444,6 +428,21 @@ class ProductDetailPageWidge extends StatelessWidget {
                           },
                         ),
                       ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      HtmlParser.parseHTML(productDetail.description).text,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(
+                      height: 20,
                     ),
                   ],
                 ),
