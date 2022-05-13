@@ -1,3 +1,6 @@
+![productView-preview3](https://user-images.githubusercontent.com/43641536/168379718-d4e14a3a-d794-4e2e-b500-dc120fce369f.gif)
+
+
 # productview
 
 This project is the demo for using REST api, BloC, and flutter app development.
@@ -16,6 +19,12 @@ This project is the demo for using REST api, BloC, and flutter app development.
 
 ## Customer Create List
 `https://panel.supplyline.network/api/customer/`
+
+## Screenshots
+Search Page | Product Details Page |  Product Details Page  |
+------------|----------------------|------------------------|
+![Screenshot_20220514-015539_productview](https://user-images.githubusercontent.com/43641536/168381970-96e01e29-26ff-44ab-979d-6358665bfea9.png) | ![Screenshot_20220514-015602_productview](https://user-images.githubusercontent.com/43641536/168380929-96a5ef27-3966-46fb-9c84-785f9cdc9337.png) | ![Screenshot_20220514-015633_productview](https://user-images.githubusercontent.com/43641536/168380984-2e291c8c-0b73-4443-bd44-9f4ebac59bbe.png)
+
 
 ## Getting Started
 
