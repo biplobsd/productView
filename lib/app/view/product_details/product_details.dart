@@ -76,6 +76,7 @@ class ProductDetailsPageScreen extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class ProductDetailPageWidge extends StatelessWidget {
   ProductDetailPageWidge({
     required this.productDetail,
@@ -198,114 +199,154 @@ class ProductDetailPageWidge extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white,
-                      ),
+                      margin: const EdgeInsets.only(bottom: 20),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'ক্রয়মূল্যঃ',
-                                style: customTextStyle.copyWith(
-                                  color: const Color.fromRGBO(
-                                    218,
-                                    32,
-                                    121,
-                                    1,
-                                  ),
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'ক্রয়মূল্যঃ',
+                                      style: customTextStyle.copyWith(
+                                        color: const Color.fromRGBO(
+                                          218,
+                                          32,
+                                          121,
+                                          1,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '৳ ${productDetail.currentCharge.toStringAsFixed(0)}',
+                                      style: customTextStyle.copyWith(
+                                        color: const Color.fromRGBO(
+                                          218,
+                                          32,
+                                          121,
+                                          1,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              Text(
-                                '৳ ${productDetail.currentCharge.toStringAsFixed(0)}',
-                                style: customTextStyle.copyWith(
-                                  color: const Color.fromRGBO(
-                                    218,
-                                    32,
-                                    121,
-                                    1,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'বিক্রয়মূল্যঃ',
-                                    style: customTextStyle,
-                                  ),
-                                  Text(
-                                    '৳ ${productDetail.sellingPrice.toStringAsFixed(0)}',
-                                    style: customTextStyle,
-                                  ),
-                                ],
-                              ),
-                              if (productDetail.isEnable)
-                                BlocBuilder<CartquantitycounterCubit,
-                                    CartquantitycounterState>(
-                                  builder: (context, state) {
-                                    return SizedBox(
-                                      width: 150,
-                                      child: CouterQuantityWidget(
-                                        callback1: () {
-                                          if (!BlocProvider.of<
-                                              CartquantitycounterCubit>(
-                                            context,
-                                          ).refresh(
-                                            BlocProvider.of<
-                                                CartquantitycounterCubit>(
-                                              context,
-                                            ).count -= 1,
-                                          )) {
-                                            productDetail.isEnable = false;
-                                          }
-                                        },
-                                        quantityText:
-                                            '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
-                                        callback2: () {
-                                          BlocProvider.of<
-                                              CartquantitycounterCubit>(
-                                            context,
-                                          ).refresh(
-                                            BlocProvider.of<
-                                                CartquantitycounterCubit>(
-                                              context,
-                                            ).count += 1,
+                                const SizedBox(height: 10),
+                                Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'বিক্রয়মূল্যঃ',
+                                          style: customTextStyle,
+                                        ),
+                                        Text(
+                                          '৳ ${productDetail.sellingPrice.toStringAsFixed(0)}',
+                                          style: customTextStyle,
+                                        ),
+                                      ],
+                                    ),
+                                    if (productDetail.isEnable)
+                                      BlocBuilder<CartquantitycounterCubit,
+                                          CartquantitycounterState>(
+                                        builder: (context, state) {
+                                          return SizedBox(
+                                            width: 150,
+                                            child: CouterQuantityWidget(
+                                              callback1: () {
+                                                if (!BlocProvider.of<
+                                                    CartquantitycounterCubit>(
+                                                  context,
+                                                ).refresh(
+                                                  BlocProvider.of<
+                                                      CartquantitycounterCubit>(
+                                                    context,
+                                                  ).count -= 1,
+                                                )) {
+                                                  productDetail.isEnable =
+                                                      false;
+                                                }
+                                              },
+                                              quantityText:
+                                                  '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
+                                              callback2: () {
+                                                BlocProvider.of<
+                                                    CartquantitycounterCubit>(
+                                                  context,
+                                                ).refresh(
+                                                  BlocProvider.of<
+                                                      CartquantitycounterCubit>(
+                                                    context,
+                                                  ).count += 1,
+                                                );
+                                              },
+                                            ),
                                           );
                                         },
                                       ),
-                                    );
-                                  },
+                                  ],
                                 ),
-                            ],
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const DottedLine(
+                                  dashColor: Colors.grey,
+                                ),
+                                const SizedBox(height: 5),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'লাভঃ',
+                                      style: customTextStyle,
+                                    ),
+                                    Text(
+                                      '৳ ${productDetail.profit.toStringAsFixed(0)}',
+                                      style: customTextStyle,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const DottedLine(
-                            dashColor: Colors.grey,
-                          ),
-                          const SizedBox(height: 5),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'লাভঃ',
-                                style: customTextStyle,
+                              const SizedBox(
+                                height: 20,
                               ),
                               Text(
-                                '৳ ${productDetail.profit.toStringAsFixed(0)}',
-                                style: customTextStyle,
+                                'বিস্তারিত',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black.withOpacity(0.75),
+                                    ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                HtmlParser.parseHTML(productDetail.description)
+                                    .text,
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              const SizedBox(
+                                height: 30,
                               ),
                             ],
                           ),
@@ -313,7 +354,7 @@ class ProductDetailPageWidge extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      bottom: -60,
+                      bottom: 90,
                       child: InkWell(
                         onTap: () {
                           BlocProvider.of<MaincartCubit>(context)
@@ -405,26 +446,6 @@ class ProductDetailPageWidge extends StatelessWidget {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  'বিস্তারিত',
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black.withOpacity(0.75),
-                      ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Text(
-                  HtmlParser.parseHTML(productDetail.description).text,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(
-                  height: 30,
                 ),
               ],
             ),

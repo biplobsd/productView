@@ -88,7 +88,7 @@ class SearchPageScreen extends StatelessWidget {
                         }
                       },
                       child: MasonryGridView.count(
-                        mainAxisSpacing: 30,
+                        mainAxisSpacing: 15,
                         crossAxisSpacing: 15,
                         crossAxisCount: 2,
                         itemCount: productDetails.length,

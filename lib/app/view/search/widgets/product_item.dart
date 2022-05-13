@@ -1,3 +1,4 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -38,132 +39,135 @@ class ProductItemStracture extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
       children: [
-        InkWell(
-          onTap: () {
-            if (productItem.stock != 0) {
-              productItem.cartquantity =
-                  BlocProvider.of<CartquantitycounterCubit>(context).count;
-              Navigator.of(context).pushNamed(
-                ProductDetailsPage.pathName,
-                arguments: productItem,
-              );
-            } else {
-              Fluttertoast.showToast(msg: 'Product is stock out!');
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Image.network(
-                    productItem.image,
-                    fit: BoxFit.cover,
-                    // height: 70,
+        Container(
+          margin: const EdgeInsets.only(bottom: 20),
+          child: InkWell(
+            onTap: () {
+              if (productItem.stock != 0) {
+                productItem.cartquantity =
+                    BlocProvider.of<CartquantitycounterCubit>(context).count;
+                Navigator.of(context).pushNamed(
+                  ProductDetailsPage.pathName,
+                  arguments: productItem,
+                );
+              } else {
+                Fluttertoast.showToast(msg: 'Product is stock out!');
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: FancyShimmerImage(
+                      imageUrl: productItem.image,
+                      boxFit: BoxFit.scaleDown,
+                      height: 200,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  productItem.productName,
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 14,
-                        color: Colors.black87.withOpacity(
-                          0.75,
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    productItem.productName,
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 14,
+                          color: Colors.black87.withOpacity(
+                            0.75,
+                          ),
+                        ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'ক্রয় ',
+                            style: GoogleFonts.balooDa2(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 8,
+                            ),
+                          ),
+                          Text(
+                            '৳ ${productItem.currentCharge.toStringAsFixed(2)}',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w700,
+                              color: AppTheme.lightSecondaryColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '৳ ${productItem.discountCharge.toStringAsFixed(2)}',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12,
+                          decoration: TextDecoration.lineThrough,
+                          color: AppTheme.lightSecondaryColor,
                         ),
                       ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'ক্রয় ',
-                          style: GoogleFonts.balooDa2(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 8,
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'বিক্রয় ',
+                            style: GoogleFonts.balooDa2(
+                              fontWeight: FontWeight.w400,
+                              color: AppTheme.lightBlackColor,
+                              fontSize: 8,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '৳ ${productItem.currentCharge.toStringAsFixed(2)}',
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.lightSecondaryColor,
+                          Text(
+                            '৳ ${productItem.sellingPrice.toStringAsFixed(2)}',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: AppTheme.lightBlackColor,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      '৳ ${productItem.discountCharge.toStringAsFixed(2)}',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                        decoration: TextDecoration.lineThrough,
-                        color: AppTheme.lightSecondaryColor,
+                        ],
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'বিক্রয় ',
-                          style: GoogleFonts.balooDa2(
-                            fontWeight: FontWeight.w400,
-                            color: AppTheme.lightBlackColor,
-                            fontSize: 8,
+                      Row(
+                        children: [
+                          Text(
+                            'লাভ ',
+                            style: GoogleFonts.balooDa2(
+                              fontWeight: FontWeight.w400,
+                              color: AppTheme.lightBlackColor,
+                              fontSize: 8,
+                            ),
                           ),
-                        ),
-                        Text(
-                          '৳ ${productItem.sellingPrice.toStringAsFixed(2)}',
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            color: AppTheme.lightBlackColor,
+                          Text(
+                            '৳ ${productItem.profit.toStringAsFixed(2)}',
+                            style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: AppTheme.lightBlackColor,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          'লাভ ',
-                          style: GoogleFonts.balooDa2(
-                            fontWeight: FontWeight.w400,
-                            color: AppTheme.lightBlackColor,
-                            fontSize: 8,
-                          ),
-                        ),
-                        Text(
-                          '৳ ${productItem.profit.toStringAsFixed(2)}',
-                          style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                            color: AppTheme.lightBlackColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -200,7 +204,7 @@ class ProductItemStracture extends StatelessWidget {
                       state is CartquantitycounterInitial) &&
                   productItem.isEnable == false) {
                 return Positioned(
-                  bottom: -20,
+                  bottom: 5,
                   child: CartQuantityIcDc(
                     callBack: () {
                       productItem.isEnable = true;
@@ -217,7 +221,7 @@ class ProductItemStracture extends StatelessWidget {
                 );
               } else {
                 return Positioned(
-                  bottom: -20,
+                  bottom: 5,
                   child: CouterQuantityWidget(
                     callback1: () {
                       if (!BlocProvider.of<CartquantitycounterCubit>(
@@ -320,26 +324,29 @@ class CartQuantityIcDc extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      radius: 31,
       onTap: () {
         callBack();
       },
-      child: Container(
-        height: size,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: colors,
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+      child: IgnorePointer(
+        child: Container(
+          height: size,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: colors,
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
           ),
-        ),
-        child: FittedBox(
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            child: Icon(
-              icon,
-              color: Colors.white,
+          child: FittedBox(
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              child: Icon(
+                icon,
+                color: Colors.white,
+              ),
             ),
           ),
         ),
