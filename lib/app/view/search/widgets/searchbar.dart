@@ -17,11 +17,11 @@ class SearchbarWidget extends StatelessWidget {
 
     return TextField(
       controller: searchbarController,
-      onSubmitted: (value) {
+      onSubmitted: (String value) {
         onSubmitted(value);
       },
       decoration: InputDecoration(
-        hintText: 'কাঙ্খিত পণ্যটি খুঁজুন',
+        hintText: 'কাঙ্ক্ষিত পণ্যটি খুঁজুন',
         hintStyle: Theme.of(context).textTheme.caption,
         suffixIcon: const Icon(Icons.search),
         filled: true,

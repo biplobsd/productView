@@ -8,9 +8,8 @@ part 'searchfetch_state.dart';
 class SearchfetchCubit extends Cubit<SearchfetchState> {
   SearchfetchCubit({required this.query}) : super(SearchfetchInitialState()) {
     _client = RestApi();
-    if (query.isNotEmpty) {
-      search(query, addList: false);
-    }
+
+    search(query, addList: false);
   }
   late String query;
   late final RestApi _client;
@@ -19,27 +18,30 @@ class SearchfetchCubit extends Cubit<SearchfetchState> {
   late List<ProductItem> result = [];
   late int offset = 10;
 
-  Future<bool> search(String query,
-      {int offset = 10, bool addList = true}) async {
+  Future<bool> search(
+    String query, {
+    int offset = 10,
+    bool addList = true,
+  }) async {
     this.query = query;
     if (!addList) {
       result = [];
     }
     this.offset = offset;
 
-    List<ProductItem> data = [];
+    var data = <ProductItem>[];
     if (kDebugMode) {
       print(query);
       print(addList);
       print('Size of result: ${result.length}');
     }
     emit(SearchfetchingState());
-    var rawdata = await _client
+    final rawdata = await _client
         .getSearchSuggestions(query: query.toLowerCase(), offset: offset)
         .onError((error, stackTrace) {
       if (kDebugMode) {
         emit(SearchfetchErrorState());
-        offset = 10;
+        this.offset = 10;
         print(error);
       }
       return {
@@ -47,8 +49,8 @@ class SearchfetchCubit extends Cubit<SearchfetchState> {
         'count': 0,
       };
     });
-    data = rawdata['result'];
-    count = rawdata['count'];
+    data = rawdata['result'] as List<ProductItem>;
+    count = rawdata['count'] as int;
     if (kDebugMode) {
       print(count);
     }
@@ -59,7 +61,7 @@ class SearchfetchCubit extends Cubit<SearchfetchState> {
       return true;
     } else if (state is! SearchfetchErrorState) {
       emit(SearchfetchedNoDataState());
-      offset = 10;
+      this.offset = 10;
     }
     return false;
   }

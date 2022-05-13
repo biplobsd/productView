@@ -64,8 +64,8 @@ class ProductDetailsPageScreen extends StatelessWidget {
           } else if (state is ProductfetchedState ||
               state is ProductfetchedNoDataState) {
             return ProductDetailPageWidge(
-                productDetail:
-                    BlocProvider.of<ProductfetchCubit>(context).result);
+              productDetail: BlocProvider.of<ProductfetchCubit>(context).result,
+            );
           } else if (state is ProducterrorState) {
             return const Text('Fetching detail on error');
           }
@@ -87,10 +87,12 @@ class ProductDetailPageWidge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var customTextStyle = Theme.of(context).textTheme.titleSmall!.copyWith(
-        fontWeight: FontWeight.bold,
-        color:
-            Theme.of(context).textTheme.titleSmall!.color!.withOpacity(0.75));
+    final customTextStyle = Theme.of(context).textTheme.titleSmall!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Theme.of(context).textTheme.titleSmall!.color!.withOpacity(
+                0.75,
+              ),
+        );
     BlocProvider.of<CartquantitycounterCubit>(context).count =
         productDetail.cartquantity;
     return SingleChildScrollView(
@@ -98,62 +100,70 @@ class ProductDetailPageWidge extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: SearchbarWidget(
-                onSubmitted: (value) {
-                  Navigator.pushReplacementNamed(context, SearchPage.pathName,
-                      arguments: value);
-                },
-              )),
-          CarouselSlider.builder(
-              itemCount: productDetail.images.length,
-              options: CarouselOptions(
-                height: 300,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                enlargeStrategy: CenterPageEnlargeStrategy.height,
-              ),
-              itemBuilder: (context, index, realIndex) {
-                return Container(
-                  alignment: Alignment.center,
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.white,
-                  ),
-                  child: Image.network(
-                    productDetail.images[index],
-                    fit: BoxFit.cover,
-                    // height: 200,
-                  ),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: SearchbarWidget(
+              onSubmitted: (String value) {
+                Navigator.pushReplacementNamed(
+                  context,
+                  SearchPage.pathName,
+                  arguments: value,
                 );
-              }),
+              },
+            ),
+          ),
+          CarouselSlider.builder(
+            itemCount: productDetail.images.length,
+            options: CarouselOptions(
+              height: 300,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              enlargeStrategy: CenterPageEnlargeStrategy.height,
+            ),
+            itemBuilder: (context, index, realIndex) {
+              return Container(
+                alignment: Alignment.center,
+                margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                ),
+                child: Image.network(
+                  productDetail.images[index],
+                  fit: BoxFit.cover,
+                  // height: 200,
+                ),
+              );
+            },
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(productDetail.productName,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(fontWeight: FontWeight.bold)),
+                Text(
+                  productDetail.productName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(
                   height: 12,
                 ),
                 Row(
                   children: [
-                    Text('ব্র্যান্ড:',
-                        style: Theme.of(context).textTheme.labelSmall),
+                    Text(
+                      'ব্রান্ডঃ ',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
                     Flexible(
                       child: Text(
                         productDetail.brandName,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context)
                             .textTheme
-                            .labelSmall!
+                            .labelMedium!
                             .copyWith(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -165,16 +175,20 @@ class ProductDetailPageWidge extends StatelessWidget {
                       size: 7,
                       color: Color.fromRGBO(218, 32, 121, 1),
                     ),
-                    Text(' ডিস্ট্রিবিউটর: ',
-                        style: Theme.of(context).textTheme.labelSmall),
+                    Text(
+                      ' ডিস্ট্রিবিউটরঃ ',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
                     Flexible(
-                      child: Text(productDetail.seller,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelSmall!
-                              .copyWith(fontWeight: FontWeight.bold)),
+                      child: Text(
+                        productDetail.seller,
+                        softWrap: true,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            Theme.of(context).textTheme.labelMedium!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
                     ),
                   ],
                 ),
@@ -195,16 +209,26 @@ class ProductDetailPageWidge extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'ক্রয়মূল্য:',
+                                'ক্রয়মূল্যঃ',
                                 style: customTextStyle.copyWith(
-                                    color:
-                                        const Color.fromRGBO(218, 32, 121, 1)),
+                                  color: const Color.fromRGBO(
+                                    218,
+                                    32,
+                                    121,
+                                    1,
+                                  ),
+                                ),
                               ),
                               Text(
-                                '৳ ${productDetail.currentCharge.toStringAsFixed(2)}',
+                                '৳ ${productDetail.currentCharge.toStringAsFixed(0)}',
                                 style: customTextStyle.copyWith(
-                                    color:
-                                        const Color.fromRGBO(218, 32, 121, 1)),
+                                  color: const Color.fromRGBO(
+                                    218,
+                                    32,
+                                    121,
+                                    1,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -217,11 +241,11 @@ class ProductDetailPageWidge extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'বিক্রয়মূল্য:',
+                                    'বিক্রয়মূল্যঃ',
                                     style: customTextStyle,
                                   ),
                                   Text(
-                                    '৳ ${productDetail.sellingPrice.toStringAsFixed(2)}',
+                                    '৳ ${productDetail.sellingPrice.toStringAsFixed(0)}',
                                     style: customTextStyle,
                                   ),
                                 ],
@@ -235,13 +259,13 @@ class ProductDetailPageWidge extends StatelessWidget {
                                       child: CouterQuantityWidget(
                                         callback1: () {
                                           if (!BlocProvider.of<
-                                                      CartquantitycounterCubit>(
-                                                  context)
-                                              .refresh(
+                                              CartquantitycounterCubit>(
+                                            context,
+                                          ).refresh(
                                             BlocProvider.of<
-                                                        CartquantitycounterCubit>(
-                                                    context)
-                                                .count -= 1,
+                                                CartquantitycounterCubit>(
+                                              context,
+                                            ).count -= 1,
                                           )) {
                                             productDetail.isEnable = false;
                                           }
@@ -250,13 +274,13 @@ class ProductDetailPageWidge extends StatelessWidget {
                                             '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
                                         callback2: () {
                                           BlocProvider.of<
-                                                      CartquantitycounterCubit>(
-                                                  context)
-                                              .refresh(
+                                              CartquantitycounterCubit>(
+                                            context,
+                                          ).refresh(
                                             BlocProvider.of<
-                                                        CartquantitycounterCubit>(
-                                                    context)
-                                                .count += 1,
+                                                CartquantitycounterCubit>(
+                                              context,
+                                            ).count += 1,
                                           );
                                         },
                                       ),
@@ -276,11 +300,11 @@ class ProductDetailPageWidge extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'লাভ:',
+                                'লাভঃ',
                                 style: customTextStyle,
                               ),
                               Text(
-                                '৳ ${productDetail.profit.toStringAsFixed(2)}',
+                                '৳ ${productDetail.profit.toStringAsFixed(0)}',
                                 style: customTextStyle,
                               ),
                             ],
@@ -306,24 +330,24 @@ class ProductDetailPageWidge extends StatelessWidget {
                                   child: ClipPolygon(
                                     sides: 6,
                                     borderRadius: 10,
-                                    rotate: 180.0,
+                                    rotate: 180,
                                     child: Container(
                                       alignment: Alignment.center,
                                       decoration: const BoxDecoration(
-                                          gradient: LinearGradient(
-                                              colors: [
+                                        gradient: LinearGradient(
+                                          colors: [
                                             Color(0xff6210E1),
                                             Color(0xff2503B9)
                                           ],
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter)),
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                        ),
+                                      ),
                                       child: isBuyed
                                           ? FittedBox(
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
                                                 children: [
                                                   Image.asset(
                                                     'assets/img/shopping_bag.png',
@@ -353,21 +377,25 @@ class ProductDetailPageWidge extends StatelessWidget {
                                 if (BlocProvider.of<MaincartCubit>(context)
                                     .isNotEmpty)
                                   Positioned(
-                                    right: -5.0,
+                                    right: -5,
                                     top: 10,
                                     child: Container(
                                       alignment: Alignment.center,
-                                      padding: const EdgeInsets.all(5.0),
+                                      padding: const EdgeInsets.all(5),
                                       decoration: BoxDecoration(
-                                          color: const Color(0xffFFCCE4),
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              color: Colors.white, width: 2)),
+                                        color: const Color(0xffFFCCE4),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 2,
+                                        ),
+                                      ),
                                       child: Text(
-                                          '${BlocProvider.of<MaincartCubit>(context).howMany}',
-                                          style: const TextStyle(
-                                            color: Color(0xffDA2079),
-                                          )),
+                                        '${BlocProvider.of<MaincartCubit>(context).howMany}',
+                                        style: const TextStyle(
+                                          color: Color(0xffDA2079),
+                                        ),
+                                      ),
                                     ),
                                   )
                               ],
@@ -383,7 +411,7 @@ class ProductDetailPageWidge extends StatelessWidget {
                 ),
                 Text(
                   'বিস্তারিত',
-                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
                         fontWeight: FontWeight.bold,
                         color: Colors.black.withOpacity(0.75),
                       ),
@@ -394,6 +422,9 @@ class ProductDetailPageWidge extends StatelessWidget {
                 Text(
                   HtmlParser.parseHTML(productDetail.description).text,
                   style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(
+                  height: 30,
                 ),
               ],
             ),

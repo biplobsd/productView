@@ -11,7 +11,7 @@ class Routes {
       case SearchPage.pathName:
         return MaterialPageRoute<SearchPage>(
           builder: (context) => SearchPage(
-            query: args is String ? args : 'rice',
+            query: args is String ? args : '',
           ),
         );
       case ProductDetailsPage.pathName:

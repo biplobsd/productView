@@ -15,7 +15,8 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         onGenerateRoute: Routes().onGenerateRoute,
         theme: ThemeData(
-            scaffoldBackgroundColor: const Color.fromRGBO(247, 242, 255, 1)),
+            scaffoldBackgroundColor: const Color.fromRGBO(247, 242, 255, 1),
+            fontFamily: 'balooDa2'),
         initialRoute: SearchPage.pathName,
       ),
     );

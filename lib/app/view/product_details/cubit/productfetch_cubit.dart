@@ -49,8 +49,9 @@ class ProductfetchCubit extends Cubit<ProductfetchState> {
     }
     if (data.seller.isNotEmpty) {
       emit(ProductfetchedState());
-      data.cartquantity = productItem.cartquantity;
-      data.isEnable = productItem.isEnable;
+      data
+        ..cartquantity = productItem.cartquantity
+        ..isEnable = productItem.isEnable;
       result = data;
       return true;
     } else if (state is! ProducterrorState) {

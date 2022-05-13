@@ -40,8 +40,9 @@ class SearchPageScreen extends StatelessWidget {
               height: 50,
             ),
             SearchbarWidget(
-              onSubmitted: (value) => BlocProvider.of<SearchfetchCubit>(context)
-                  .search(value, offset: 10, addList: false),
+              onSubmitted: (String value) =>
+                  BlocProvider.of<SearchfetchCubit>(context)
+                      .search(value, offset: 10, addList: false),
               query: BlocProvider.of<SearchfetchCubit>(context).query,
             ),
             const SizedBox(height: 20),
@@ -72,12 +73,10 @@ class SearchPageScreen extends StatelessWidget {
                                 .length) {
                           await BlocProvider.of<SearchfetchCubit>(context)
                               .search(
-                                  BlocProvider.of<SearchfetchCubit>(context)
-                                      .query,
-                                  offset:
-                                      BlocProvider.of<SearchfetchCubit>(context)
-                                          .offset += 10,
-                                  addList: true);
+                            BlocProvider.of<SearchfetchCubit>(context).query,
+                            offset: BlocProvider.of<SearchfetchCubit>(context)
+                                .offset += 10,
+                          );
 
                           refreshController.loadComplete();
                           if (BlocProvider.of<SearchfetchCubit>(context).state
@@ -114,7 +113,8 @@ class SearchPageScreen extends StatelessWidget {
                   );
                 } else if (state is SearchfetchErrorState) {
                   return const Text(
-                      'An error raise when fetching data from api.');
+                    'An error raise when fetching data from api.',
+                  );
                 } else {
                   return Container();
                 }

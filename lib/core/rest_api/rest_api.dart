@@ -5,7 +5,6 @@ import 'package:productview/core/rest_api/models/product_item.dart';
 import 'package:productview/core/rest_api/rest_url_path.dart';
 
 class RestApi {
-  late Dio client;
   RestApi() {
     client = Dio(
       BaseOptions(
@@ -17,6 +16,7 @@ class RestApi {
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.46 Safari/537.36',
     };
   }
+  late Dio client;
 
   Future<Map<String, dynamic>> getSearchSuggestions(
       {required String query, int limit = 10, int offset = 10}) async {
