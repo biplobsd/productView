@@ -25,6 +25,7 @@ class SearchfetchCubit extends Cubit<SearchfetchState> {
   }) async {
     this.query = query;
     if (!addList) {
+      emit(SearchfetchInitialState());
       result = [];
     }
     this.offset = offset;
