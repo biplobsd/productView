@@ -47,7 +47,7 @@ class ProductDetailsPageScreen extends StatelessWidget {
           color: Colors.black,
         ),
         title: Text(
-          'প্রোডাক্ট ডিটেল',
+          'প্রোডাক্ট ডিটেইল',
           style: Theme.of(context)
               .textTheme
               .titleMedium!
@@ -333,8 +333,8 @@ class ProductDetailPageWidge extends StatelessWidget {
                                 if (BlocProvider.of<MaincartCubit>(context)
                                     .isNotEmpty)
                                   Positioned(
-                                    right: -10.0,
-                                    top: 13,
+                                    right: -5.0,
+                                    top: 10,
                                     child: Container(
                                       alignment: Alignment.center,
                                       padding: const EdgeInsets.all(5.0),

@@ -21,7 +21,7 @@ class SearchbarWidget extends StatelessWidget {
         onSubmitted(value);
       },
       decoration: InputDecoration(
-        hintText: 'কাক্ষিত পন্যটি খুঁজুন',
+        hintText: 'কাঙ্খিত পণ্যটি খুঁজুন',
         hintStyle: Theme.of(context).textTheme.caption,
         suffixIcon: const Icon(Icons.search),
         filled: true,
