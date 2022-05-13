@@ -6,6 +6,8 @@ class ProductItem {
   final double sellingPrice;
   final double profit;
   final String slug;
+  late int cartquantity;
+  late bool isEnable;
 
   ProductItem({
     required this.image,
@@ -15,10 +17,12 @@ class ProductItem {
     required this.sellingPrice,
     required this.profit,
     required this.slug,
+    this.cartquantity = 1,
+    this.isEnable = false,
   });
 
   @override
   String toString() {
-    return 'Product(image: $image, productName: $productName, currentCharge: $currentCharge, discountCharge: $discountCharge, sellingPrice: $sellingPrice, profit: $profit, slug: $slug)';
+    return 'ProductItem(image: $image, productName: $productName, currentCharge: $currentCharge, discountCharge: $discountCharge, sellingPrice: $sellingPrice, profit: $profit, slug: $slug, cartquantity: $cartquantity)';
   }
 }

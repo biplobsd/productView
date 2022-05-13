@@ -1,9 +1,29 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:productview/app/view/product_details/product_details.dart';
+import 'package:productview/app/view/search/widgets/cubit/cartquantitycounter_cubit.dart';
 import 'package:productview/core/rest_api/models/product_item.dart';
 
 class ProductItemWidget extends StatelessWidget {
   const ProductItemWidget({
+    Key? key,
+    required this.productItem,
+  }) : super(key: key);
+
+  final ProductItem productItem;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => CartquantitycounterCubit(),
+      child: ProductItemStracture(productItem: productItem),
+    );
+  }
+}
+
+class ProductItemStracture extends StatelessWidget {
+  const ProductItemStracture({
     Key? key,
     required this.productItem,
   }) : super(key: key);
@@ -138,57 +158,126 @@ class ProductItemWidget extends StatelessWidget {
             ),
           ),
         ),
-        Positioned(
-          bottom: -20,
-          child: IconButton(
-            onPressed: () {},
-            icon: const GradientIcon(
-              icon: Icons.add_circle,
-              size: 20.0,
-              gradient: LinearGradient(
-                colors: <Color>[
-                  Color.fromRGBO(98, 16, 225, 1),
-                  Color.fromRGBO(50, 6, 194, 1),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-          ),
+        BlocBuilder<CartquantitycounterCubit, CartquantitycounterState>(
+          builder: (context, state) {
+            if (state is CartquantitycounterDisable ||
+                state is CartquantitycounterInitial) {
+              return Positioned(
+                bottom: -15,
+                child: CartQuantityIcDc(
+                  callBack: () {
+                    productItem.isEnable = true;
+                    BlocProvider.of<CartquantitycounterCubit>(context)
+                        .enable(count: productItem.cartquantity);
+                  },
+                  colors: const [Color(0xff6210E1), Color(0xff2503B9)],
+                  icon: Icons.add,
+                  size: 35,
+                ),
+              );
+            } else {
+              return Positioned(
+                  bottom: -20,
+                  child: Container(
+                    height: 30,
+                    padding: const EdgeInsets.all(3.5),
+                    decoration: const BoxDecoration(
+                      color: Color(0xffFFCCE4),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CartQuantityIcDc(
+                          callBack: () {
+                            BlocProvider.of<CartquantitycounterCubit>(context)
+                                .refresh(
+                              BlocProvider.of<CartquantitycounterCubit>(context)
+                                  .count -= 1,
+                            );
+                          },
+                          colors: const [Color(0xffFFBFDD), Color(0xffFFBFDD)],
+                          icon: Icons.remove,
+                          size: 25,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        FittedBox(
+                          child: Text(
+                            '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(
+                                    color: const Color(0xffDA2079)
+                                        .withOpacity(0.8),
+                                    fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        CartQuantityIcDc(
+                          callBack: () {
+                            BlocProvider.of<CartquantitycounterCubit>(context)
+                                .refresh(
+                              BlocProvider.of<CartquantitycounterCubit>(context)
+                                  .count += 1,
+                            );
+                          },
+                          colors: const [Color(0xff6210E1), Color(0xff2503B9)],
+                          icon: Icons.add,
+                          size: 25,
+                        ),
+                      ],
+                    ),
+                  ));
+            }
+          },
         ),
       ],
     );
   }
 }
 
-class GradientIcon extends StatelessWidget {
-  const GradientIcon({
+class CartQuantityIcDc extends StatelessWidget {
+  const CartQuantityIcDc({
+    required this.callBack,
+    required this.colors,
     required this.icon,
     required this.size,
-    required this.gradient,
     Key? key,
   }) : super(key: key);
-
+  final Function callBack;
+  final List<Color> colors;
   final IconData icon;
   final double size;
-  final Gradient gradient;
 
   @override
   Widget build(BuildContext context) {
-    return ShaderMask(
-      child: SizedBox(
-        width: size * 1.2,
-        height: size * 1.2,
-        child: Icon(
-          icon,
-          size: size,
-          color: Colors.white,
+    return InkWell(
+      onTap: () {
+        callBack();
+      },
+      child: Container(
+        height: size,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+                colors: colors,
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
+        child: FittedBox(
+          child: Container(
+              padding: const EdgeInsets.all(3.0),
+              child: Icon(
+                icon,
+                color: Colors.white,
+              )),
         ),
       ),
-      shaderCallback: (Rect bounds) {
-        final Rect rect = Rect.fromLTRB(0, 0, size, size);
-        return gradient.createShader(rect);
-      },
     );
   }
 }
