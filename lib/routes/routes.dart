@@ -16,7 +16,8 @@ class Routes {
         );
       case ProductDetailsPage.pathName:
         return MaterialPageRoute<ProductDetailsPage>(
-          builder: (context) => ProductDetailsPage(slug: args as ProductItem),
+          builder: (context) =>
+              ProductDetailsPage(productItem: args as ProductItem),
         );
       default:
         return null;

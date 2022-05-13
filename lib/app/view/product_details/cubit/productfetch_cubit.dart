@@ -35,6 +35,8 @@ class ProductfetchCubit extends Cubit<ProductfetchState> {
         sellingPrice: productItem.sellingPrice,
         profit: productItem.profit,
         stock: productItem.stock,
+        cartquantity: productItem.cartquantity,
+        isEnable: productItem.isEnable,
         slug: slug,
         description: '',
         brandName: '',
@@ -47,6 +49,8 @@ class ProductfetchCubit extends Cubit<ProductfetchState> {
     }
     if (data.seller.isNotEmpty) {
       emit(ProductfetchedState());
+      data.cartquantity = productItem.cartquantity;
+      data.isEnable = productItem.isEnable;
       result = data;
       return true;
     } else if (state is! ProducterrorState) {

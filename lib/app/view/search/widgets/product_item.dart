@@ -39,6 +39,8 @@ class ProductItemStracture extends StatelessWidget {
         InkWell(
           onTap: () {
             if (productItem.stock != 0) {
+              productItem.cartquantity =
+                  BlocProvider.of<CartquantitycounterCubit>(context).count;
               Navigator.of(context).pushNamed(
                 ProductDetailsPage.pathName,
                 arguments: productItem,
@@ -187,8 +189,9 @@ class ProductItemStracture extends StatelessWidget {
               )
             : BlocBuilder<CartquantitycounterCubit, CartquantitycounterState>(
                 builder: (context, state) {
-                  if (state is CartquantitycounterDisable ||
-                      state is CartquantitycounterInitial) {
+                  if ((state is CartquantitycounterDisable ||
+                          state is CartquantitycounterInitial) &&
+                      productItem.isEnable == false) {
                     return Positioned(
                       bottom: -15,
                       child: CartQuantityIcDc(
@@ -204,76 +207,88 @@ class ProductItemStracture extends StatelessWidget {
                     );
                   } else {
                     return Positioned(
-                        bottom: -20,
-                        child: Container(
-                          height: 30,
-                          padding: const EdgeInsets.all(3.5),
-                          decoration: const BoxDecoration(
-                            color: Color(0xffFFCCE4),
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CartQuantityIcDc(
-                                callBack: () {
-                                  BlocProvider.of<CartquantitycounterCubit>(
-                                          context)
-                                      .refresh(
-                                    BlocProvider.of<CartquantitycounterCubit>(
-                                            context)
-                                        .count -= 1,
-                                  );
-                                },
-                                colors: const [
-                                  Color(0xffFFBFDD),
-                                  Color(0xffFFBFDD)
-                                ],
-                                icon: Icons.remove,
-                                size: 25,
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              FittedBox(
-                                child: Text(
-                                  '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .caption!
-                                      .copyWith(
-                                          color: const Color(0xffDA2079)
-                                              .withOpacity(0.8),
-                                          fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              CartQuantityIcDc(
-                                callBack: () {
-                                  BlocProvider.of<CartquantitycounterCubit>(
-                                          context)
-                                      .refresh(
-                                    BlocProvider.of<CartquantitycounterCubit>(
-                                            context)
-                                        .count += 1,
-                                  );
-                                },
-                                colors: const [
-                                  Color(0xff6210E1),
-                                  Color(0xff2503B9)
-                                ],
-                                icon: Icons.add,
-                                size: 25,
-                              ),
-                            ],
-                          ),
-                        ));
+                      bottom: -20,
+                      child: CouterQuantityWidget(
+                        callback1: () {
+                          if (!BlocProvider.of<CartquantitycounterCubit>(
+                                  context)
+                              .refresh(
+                            BlocProvider.of<CartquantitycounterCubit>(context)
+                                .count -= 1,
+                          )) {
+                            productItem.isEnable = false;
+                          }
+                        },
+                        quantityText:
+                            '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
+                        callback2: () {
+                          BlocProvider.of<CartquantitycounterCubit>(context)
+                              .refresh(
+                            BlocProvider.of<CartquantitycounterCubit>(context)
+                                .count += 1,
+                          );
+                        },
+                      ),
+                    );
                   }
                 },
               ),
       ],
+    );
+  }
+}
+
+class CouterQuantityWidget extends StatelessWidget {
+  const CouterQuantityWidget({
+    required this.callback1,
+    required this.callback2,
+    required this.quantityText,
+    Key? key,
+  }) : super(key: key);
+  final Function callback1;
+  final Function callback2;
+  final String quantityText;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 30,
+      padding: const EdgeInsets.all(3.5),
+      decoration: const BoxDecoration(
+        color: Color(0xffFFCCE4),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          CartQuantityIcDc(
+            callBack: callback1,
+            colors: const [Color(0xffFFBFDD), Color(0xffFFBFDD)],
+            icon: Icons.remove,
+            size: 25,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          FittedBox(
+            child: Text(
+              quantityText,
+              style: Theme.of(context).textTheme.caption!.copyWith(
+                  color: const Color(0xffDA2079).withOpacity(0.8),
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          CartQuantityIcDc(
+            callBack: callback2,
+            colors: const [Color(0xff6210E1), Color(0xff2503B9)],
+            icon: Icons.add,
+            size: 25,
+          ),
+        ],
+      ),
     );
   }
 }

@@ -13,6 +13,8 @@ class ProductDetail extends ProductItem {
     required this.description,
     required this.brandName,
     required this.seller,
+    required int cartquantity,
+    required bool isEnable,
   }) : super(
           image: image,
           productName: productName,
@@ -22,6 +24,8 @@ class ProductDetail extends ProductItem {
           profit: profit,
           slug: slug,
           stock: stock,
+          cartquantity: cartquantity,
+          isEnable: isEnable,
         );
   final String description;
   final String brandName;

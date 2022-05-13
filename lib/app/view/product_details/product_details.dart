@@ -5,19 +5,29 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:productview/app/view/product_details/cubit/productfetch_cubit.dart';
 import 'package:productview/app/view/search/search.dart';
+import 'package:productview/app/view/search/widgets/cubit/cartquantitycounter_cubit.dart';
+import 'package:productview/app/view/search/widgets/product_item.dart';
 import 'package:productview/app/view/search/widgets/searchbar.dart';
 import 'package:productview/core/rest_api/models/product_details.dart';
 import 'package:productview/core/rest_api/models/product_item.dart';
 
 class ProductDetailsPage extends StatelessWidget {
-  const ProductDetailsPage({required this.slug, Key? key}) : super(key: key);
+  const ProductDetailsPage({required this.productItem, Key? key})
+      : super(key: key);
   static const String pathName = '/productdetails';
-  final ProductItem slug;
+  final ProductItem productItem;
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => ProductfetchCubit(productItem: slug),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => ProductfetchCubit(productItem: productItem),
+        ),
+        BlocProvider(
+          create: (context) => CartquantitycounterCubit(),
+        ),
+      ],
       child: const ProductDetailsPageScreen(),
     );
   }
@@ -78,6 +88,9 @@ class ProductDetailPageWidge extends StatelessWidget {
         fontWeight: FontWeight.bold,
         color:
             Theme.of(context).textTheme.titleSmall!.color!.withOpacity(0.75));
+    BlocProvider.of<CartquantitycounterCubit>(context).count =
+        productDetail.cartquantity;
+    print(productDetail.cartquantity);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,17 +188,60 @@ class ProductDetailPageWidge extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Stack(
+                            alignment: Alignment.center,
                             children: [
-                              Text(
-                                'বিক্রয়মূল্য:',
-                                style: customTextStyle,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'বিক্রয়মূল্য:',
+                                    style: customTextStyle,
+                                  ),
+                                  Text(
+                                    '৳ ${productDetail.sellingPrice.toStringAsFixed(2)}',
+                                    style: customTextStyle,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                '৳ ${productDetail.sellingPrice.toStringAsFixed(2)}',
-                                style: customTextStyle,
-                              ),
+                              if (productDetail.isEnable)
+                                BlocBuilder<CartquantitycounterCubit,
+                                    CartquantitycounterState>(
+                                  builder: (context, state) {
+                                    return SizedBox(
+                                      width: 150,
+                                      child: CouterQuantityWidget(
+                                        callback1: () {
+                                          if (!BlocProvider.of<
+                                                      CartquantitycounterCubit>(
+                                                  context)
+                                              .refresh(
+                                            BlocProvider.of<
+                                                        CartquantitycounterCubit>(
+                                                    context)
+                                                .count -= 1,
+                                          )) {
+                                            productDetail.isEnable = false;
+                                          }
+                                        },
+                                        quantityText:
+                                            '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
+                                        callback2: () {
+                                          BlocProvider.of<
+                                                      CartquantitycounterCubit>(
+                                                  context)
+                                              .refresh(
+                                            BlocProvider.of<
+                                                        CartquantitycounterCubit>(
+                                                    context)
+                                                .count += 1,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                ),
                             ],
                           ),
                           const SizedBox(
