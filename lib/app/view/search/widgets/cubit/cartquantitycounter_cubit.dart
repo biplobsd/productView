@@ -1,27 +1,29 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 part 'cartquantitycounter_state.dart';
 
 class CartquantitycounterCubit extends Cubit<CartquantitycounterState> {
-  CartquantitycounterCubit() : super(CartquantitycounterInitial());
-  int count = 1;
+  CartquantitycounterCubit()
+      : super(CartquantitycounterState(slang: '', counts: {}));
 
-  void enable({int count = 0}) {
-    this.count = count;
-    emit(CartquantitycounterEnable());
+  void enable({required String slang, int count = 0}) {
+    state.counts[slang] = count;
+    state.slang = slang;
+
+    emit(CartquantitycounterState(slang: state.slang, counts: state.counts));
   }
 
-  void disable() => emit(CartquantitycounterDisable());
-
-  bool refresh(int count) {
+  bool refresh(String slang, int count) {
+    if (!state.counts.containsKey(slang)) {
+      state.counts[slang] = 1;
+    }
     if (count <= 0) {
-      emit(CartquantitycounterDisable());
-      this.count = 1;
+      state.counts[slang] = 1;
+      emit(CartquantitycounterState(slang: slang, counts: state.counts));
       return false;
     }
-    this.count = count;
-    emit(CartquantitycounterCount());
+    state.counts[slang] = count;
+    emit(CartquantitycounterState(slang: slang, counts: state.counts));
     return true;
   }
 }

@@ -18,10 +18,7 @@ class ProductItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => CartquantitycounterCubit(),
-      child: ProductItemStracture(productItem: productItem),
-    );
+    return ProductItemStracture(productItem: productItem);
   }
 }
 
@@ -35,6 +32,9 @@ class ProductItemStracture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<CartquantitycounterCubit>(context)
+        .state
+        .counts[productItem.slug] = productItem.cartquantity;
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.bottomCenter,
@@ -44,8 +44,6 @@ class ProductItemStracture extends StatelessWidget {
           child: InkWell(
             onTap: () {
               if (productItem.stock != 0) {
-                productItem.cartquantity =
-                    BlocProvider.of<CartquantitycounterCubit>(context).count;
                 Navigator.of(context).pushNamed(
                   ProductDetailsPage.pathName,
                   arguments: productItem,
@@ -200,16 +198,16 @@ class ProductItemStracture extends StatelessWidget {
         else
           BlocBuilder<CartquantitycounterCubit, CartquantitycounterState>(
             builder: (context, state) {
-              if ((state is CartquantitycounterDisable ||
-                      state is CartquantitycounterInitial) &&
-                  productItem.isEnable == false) {
+              if (productItem.isEnable == false ||
+                  !state.slang.contains(productItem.slug)) {
                 return Positioned(
                   bottom: 5,
                   child: CartQuantityIcDc(
                     callBack: () {
                       productItem.isEnable = true;
-                      BlocProvider.of<CartquantitycounterCubit>(context)
-                          .enable(count: productItem.cartquantity);
+                      BlocProvider.of<CartquantitycounterCubit>(context).enable(
+                          slang: productItem.slug,
+                          count: state.counts[productItem.slug] ?? 1);
                     },
                     colors: const [
                       Color.fromRGBO(98, 16, 225, 1),
@@ -224,22 +222,26 @@ class ProductItemStracture extends StatelessWidget {
                   bottom: 5,
                   child: CouterQuantityWidget(
                     callback1: () {
+                      var value = state.counts[productItem.slug] ?? 1;
+
                       if (!BlocProvider.of<CartquantitycounterCubit>(
                         context,
                       ).refresh(
-                        BlocProvider.of<CartquantitycounterCubit>(context)
-                            .count -= 1,
+                        productItem.slug,
+                        value -= 1,
                       )) {
                         productItem.isEnable = false;
                       }
                     },
-                    quantityText:
-                        '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
+                    quantityText: '${state.counts[productItem.slug]}  পিস',
                     callback2: () {
-                      BlocProvider.of<CartquantitycounterCubit>(context)
-                          .refresh(
-                        BlocProvider.of<CartquantitycounterCubit>(context)
-                            .count += 1,
+                      var value = state.counts[productItem.slug] ?? 1;
+
+                      BlocProvider.of<CartquantitycounterCubit>(
+                        context,
+                      ).refresh(
+                        productItem.slug,
+                        value += 1,
                       );
                     },
                   ),

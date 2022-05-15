@@ -1,12 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'cartquantitycounter_cubit.dart';
 
-@immutable
-abstract class CartquantitycounterState {}
-
-class CartquantitycounterInitial extends CartquantitycounterState {}
-
-class CartquantitycounterEnable extends CartquantitycounterState {}
-
-class CartquantitycounterDisable extends CartquantitycounterState {}
-
-class CartquantitycounterCount extends CartquantitycounterState {}
+class CartquantitycounterState {
+  String slang;
+  Map<String, int> counts;
+  CartquantitycounterState({
+    required this.slang,
+    required this.counts,
+  });
+}

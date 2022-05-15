@@ -27,9 +27,6 @@ class ProductDetailsPage extends StatelessWidget {
         BlocProvider(
           create: (context) => ProductfetchCubit(productItem: productItem),
         ),
-        BlocProvider(
-          create: (context) => CartquantitycounterCubit(),
-        ),
       ],
       child: const ProductDetailsPageScreen(),
     );
@@ -95,8 +92,6 @@ class ProductDetailPageWidge extends StatelessWidget {
                 0.75,
               ),
         );
-    BlocProvider.of<CartquantitycounterCubit>(context).count =
-        productDetail.cartquantity;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,30 +262,34 @@ class ProductDetailPageWidge extends StatelessWidget {
                                             width: 150,
                                             child: CouterQuantityWidget(
                                               callback1: () {
+                                                var value = state.counts[
+                                                        productDetail.slug] ??
+                                                    1;
+
                                                 if (!BlocProvider.of<
                                                     CartquantitycounterCubit>(
                                                   context,
                                                 ).refresh(
-                                                  BlocProvider.of<
-                                                      CartquantitycounterCubit>(
-                                                    context,
-                                                  ).count -= 1,
+                                                  productDetail.slug,
+                                                  value -= 1,
                                                 )) {
                                                   productDetail.isEnable =
                                                       false;
                                                 }
                                               },
                                               quantityText:
-                                                  '${BlocProvider.of<CartquantitycounterCubit>(context).count}  পিস',
+                                                  '${state.counts[productDetail.slug]}  পিস',
                                               callback2: () {
+                                                var value = state.counts[
+                                                        productDetail.slug] ??
+                                                    1;
+
                                                 BlocProvider.of<
                                                     CartquantitycounterCubit>(
                                                   context,
                                                 ).refresh(
-                                                  BlocProvider.of<
-                                                      CartquantitycounterCubit>(
-                                                    context,
-                                                  ).count += 1,
+                                                  productDetail.slug,
+                                                  value += 1,
                                                 );
                                               },
                                             ),
