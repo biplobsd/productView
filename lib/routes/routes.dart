@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:productview/app/view/home/home.dart';
 import 'package:productview/app/view/product_details/product_details.dart';
 import 'package:productview/app/view/search/search.dart';
 import 'package:productview/app/view/search/widgets/cubit/cartquantitycounter_cubit.dart';
@@ -26,6 +27,10 @@ class Routes {
             value: cartquantitycounterCubit,
             child: ProductDetailsPage(productItem: args as ProductItem),
           ),
+        );
+      case HomePage.pathName:
+        return MaterialPageRoute<HomePage>(
+          builder: (context) => const HomePage(),
         );
       default:
         return null;
